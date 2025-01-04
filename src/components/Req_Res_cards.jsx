@@ -18,7 +18,7 @@ function Req_Res_cards() {
   };
 
   const analyse = async () => {
-    if (!validateInputs()) return; // Stop if validation fails
+    if (!validateInputs()) return; 
     setLoading(true);
     setApiResult(null);
     try {

@@ -1,5 +1,4 @@
 import {GoogleGenerativeAI} from "@google/generative-ai"
-import { configDotenv } from "dotenv";
 
 const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
@@ -7,13 +6,8 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 const generateResponse = async ({query, response}) => {
 
-    let prompt = `Analyze the following sales pitch: \n Customer Query: ${query} \n User Response: ${response} \n Provide short 2 line feedback on tone, clarity, and suggestions(with examples) . RETURN ME THE RESPONSE ENCLOSED WITHIN RELEVANT TAGS, USING HTML ENTITIES FOR SPECIAL CHARACTERS TO ENSURE CORRECT PARSING AND DO NOT INCLUDE 'HTML' OR 'DIV' TAGS, BUT INCLUDE 'br' tags between the Tone, Clarity & Suggestions parts. I JUST NEED TO POPULATE THIS IN AN EXISTING CARD DIV. THIS IS AN EXAMPLE FORMAT OF HOW YOU SHOULD RETURN ME (<p><strong>Tone:</strong> The tone is too passive and lacks persuasive power;  it needs more energy and benefit-driven language.</p>
-     <p><strong>Clarity:</strong> The statement is vague and doesn't highlight unique selling points;  more detail is needed to differentiate the product.</p> 
-     <p><strong>Suggestions:</strong>  Use stronger verbs and focus on benefits, e.g., &quot;It revolutionizes task management, boosting productivity by automating workflows and improving team communication!&quot; or  &quot;Conquer your to-do list with our intuitive platform – experience seamless task organization and effortless collaboration!&quot;</p>)`
-
-     let prompt2 = `Prompt for LLM Integration:
-
-You are an AI assistant integrated into a sales web application, designed to analyze mock customer queries and sales user responses. Your task is to provide real-time feedback on the following aspects:
+    
+    let prompt2 = `You are an AI assistant integrated into a sales web application, designed to analyze mock customer queries and sales user responses. Your task is to provide real-time feedback on the following aspects:
 
 Tone Analysis: Assess whether the tone used by the sales user is professional, empathetic, and engaging. Identify areas where the tone can be improved.
 Content Review: Evaluate the response for clarity, relevance, and completeness. Highlight any gaps in the information provided or if the query is not fully addressed.
@@ -49,7 +43,6 @@ Now Finally here is the Customer Query : ${query} and the user response: ${respo
 
     try {
         const result = await model.generateContent(prompt2);
-        console.log(result.response.text());
         return result.response.text();
     } catch (error) {
         console.log("Error while generating response from gemini : ", error)
